@@ -25,7 +25,7 @@ import (
 	"strings"
 )
 
-var signalOmittedMultiplication = regexp.MustCompile(`([0-9][a-zA-Z]|[a-zA-Z][0-9])`)
+var isAlfaNumeric *regexp.Regexp = regexp.MustCompile(`([0-9][a-zA-Z]|[a-zA-Z][0-9])`)
 
 func algebraicString(expression *Expression) (result string) {
 	if expression == nil {
@@ -34,6 +34,10 @@ func algebraicString(expression *Expression) (result string) {
 
 	if expression.Cache.isCached(CACHE_STRING) {
 		return expression.Cache.String
+	}
+
+	if expression.IsMalformedStructure() {
+		return expression.Cache.setString("malformed structure")
 	}
 
 	switch expression.Type {
@@ -52,31 +56,55 @@ func algebraicString(expression *Expression) (result string) {
 	case POWER:
 		result = formatPower(expression)
 
-	case SIN:
-		result = formatSin(expression)
-
-	case COS:
-		result = formatCos(expression)
-
-	case TAN:
-		result = formatTan(expression)
-
-	case LOGARITHMIC:
-		result = formatLog(expression)
-
 	case EXPONENTIAL:
 		result = formatExp(expression)
 
-	default:
-		result = ""
+	case SINE:
+		result = formatSin(expression)
+
+	case COSINE:
+		result = formatCos(expression)
+
+	case TANGENT:
+		result = formatTan(expression)
+
+	case ARCSINE:
+		result = formatAsin(expression)
+
+	case ARCCOSINE:
+		result = formatAcos(expression)
+
+	case ARCTANGENT:
+		result = formatAtan(expression)
+
+	case HYPERBOLIC_SINE:
+		result = formatSinh(expression)
+
+	case HYPERBOLIC_COSINE:
+		result = formatCosh(expression)
+
+	case HYPERBOLIC_TANGENT:
+		result = formatTanh(expression)
+
+	case HYPERBOLIC_ARCSINE:
+		result = formatAsinh(expression)
+
+	case HYPERBOLIC_ARCCOSINE:
+		result = formatAcosh(expression)
+
+	case HYPERBOLIC_ARCTANGENT:
+		result = formatAtanh(expression)
+
+	case LOGARITHMIC:
+		result = formatLog(expression)
 	}
 
 	return expression.Cache.setString(result)
 }
 
 func formatNumber(expression *Expression) string {
-	if expression.Value == nil {
-		return ""
+	if expression.IsMalformedStructure() {
+		return "NaN"
 	}
 
 	var value float64 = *expression.Value
@@ -92,58 +120,62 @@ func formatNumber(expression *Expression) string {
 		return strconv.FormatFloat(value, 'f', -1, 64)
 
 	default:
-		return ""
+		return "NaN"
 	}
 }
 
 func formatSymbol(expression *Expression) string {
+	if expression.IsMalformedStructure() {
+		return "NaN"
+	}
+
 	return expression.Name
 }
 
 func formatAddition(expression *Expression) (result string) {
-	if len(expression.Arguments) == 0 {
-		return ""
+	if expression.IsMalformedStructure() {
+		return "NaN"
 	}
 
-	var subExpressions []*Expression = flattenAddition(expression)
+	var branches []*Expression = flattenAddition(expression)
 
 	var constantSum float64
 	var symbolCoefficient map[string]float64 = make(map[string]float64)
-	var subStrings []string
+	var branchesStrings []string
 
-	for _, subExpression := range subExpressions {
-		if subExpression.IsConstant() && subExpression.Type != SYMBOL {
-			constantSum += subExpression.Execute(math.MaxInt) // Using IsConstant() guarantees Execute will always return the same value.
+	for _, branch := range branches {
+		if branch.IsConstant() && branch.Type != SYMBOL {
+			constantSum += branch.Execute(EXECUTE_CONSTANT_PLACEHOLDER) // Using IsConstant() guarantees Execute will always return the same value.
 			continue
 		}
 
-		switch subExpression.Type {
+		switch branch.Type {
 		case SYMBOL:
-			symbolCoefficient[subExpression.Name] += 1
+			symbolCoefficient[branch.Name] += 1
 			continue
 
 		default: // Any non constant or symbol need to be evaluated the need of parenthesis
-			switch subExpression.Type {
+			switch branch.Type {
 			case MULTIPLICATION:
-				var subString string = algebraicString(subExpression)
+				var branchString string = algebraicString(branch)
 
-				if strings.Contains(subString, " * ") { // If multiplication contains explicit '*' it means multiple impactful terms → needs parentheses
-					subStrings = append(
-						subStrings,
-						fmt.Sprintf("+(%s)", subString),
+				if strings.Contains(branchString, " * ") { // If multiplication contains explicit '*' it means multiple impactful terms → needs parentheses
+					branchesStrings = append(
+						branchesStrings,
+						fmt.Sprintf("+(%s)", branchString),
 					)
 
 				} else { // Single impactful term → behaves like atomic
-					subStrings = append(
-						subStrings,
-						subString,
+					branchesStrings = append(
+						branchesStrings,
+						branchString,
 					)
 				}
 
 			default: // Non-special cases → behaves like atomic
-				subStrings = append(
-					subStrings,
-					fmt.Sprintf("+%s", algebraicString(subExpression)),
+				branchesStrings = append(
+					branchesStrings,
+					fmt.Sprintf("+%s", algebraicString(branch)),
 				)
 			}
 		}
@@ -162,11 +194,11 @@ func formatAddition(expression *Expression) (result string) {
 		}
 
 		if isApproximate(coefficient, 1) || isApproximate(coefficient, -1) {
-			subStrings = append(subStrings, fmt.Sprintf("%s%s", signal, name))
+			branchesStrings = append(branchesStrings, fmt.Sprintf("%s%s", signal, name))
 			continue
 		}
 
-		subStrings = append(subStrings, fmt.Sprintf("%s%s%s", signal, Float(coefficient), name))
+		branchesStrings = append(branchesStrings, fmt.Sprintf("%s%s%s", signal, Float(coefficient), name))
 	}
 
 	if !isApproximate(constantSum, 0) {
@@ -175,14 +207,14 @@ func formatAddition(expression *Expression) (result string) {
 			signal = "+"
 		}
 
-		subStrings = append(subStrings, fmt.Sprintf("%s%s", signal, Float(constantSum)))
+		branchesStrings = append(branchesStrings, fmt.Sprintf("%s%s", signal, Float(constantSum)))
 	}
 
-	if len(subStrings) == 0 {
+	if len(branchesStrings) == 0 {
 		return ""
 	}
 
-	for i, term := range subStrings {
+	for i, term := range branchesStrings {
 		if i == 0 {
 			result = strings.TrimPrefix(term, "+")
 			continue
@@ -195,14 +227,14 @@ func formatAddition(expression *Expression) (result string) {
 }
 
 func formatMultiplication(expression *Expression) (result string) {
-	if len(expression.Arguments) == 0 {
-		return ""
+	if expression.IsMalformedStructure() {
+		return "NaN"
 	}
 
-	var subExpressions []*Expression = flattenMultiplication(expression)
+	var branches []*Expression = flattenMultiplication(expression)
 
-	for _, subExpression := range subExpressions {
-		if subExpression.IsZero() { // Using IsZero() because it recursively guarantees the whole branch evaluates to 0.
+	for _, branch := range branches {
+		if branch.IsZero() { // Using IsZero() because it recursively guarantees the whole branch evaluates to 0.
 			return ""
 		}
 	}
@@ -211,22 +243,22 @@ func formatMultiplication(expression *Expression) (result string) {
 	var numericAccumulator float64 = 1
 	var impactful []*Expression
 
-	for _, subExpression := range subExpressions {
-		if subExpression.IsSignalInvertible() { // Using IsSignalInvertible() because it recursively evaluates negativity including nested multiplications or constant sums.
+	for _, branch := range branches {
+		if branch.IsSignalInvertible() { // Using IsSignalInvertible() because it recursively evaluates negativity including nested multiplications or constant sums.
 			isOverallNegative = !isOverallNegative
 		}
 
-		if subExpression.IsAbsoluteOne() { // Ignore multiplicative identity. Using IsAbsoluteOne() because it already handles nested cases like x^0, exp(0), etc.
+		if branch.IsAbsoluteOne() { // Ignore multiplicative identity. Using IsAbsoluteOne() because it already handles nested cases like x^0, exp(0), etc.
 			continue
 		}
 
-		if subExpression.IsConstant() && subExpression.Type != SYMBOL { // Remove sign from numeric terms by absolute accumulation. Using IsConstant() ensures Execute is stable.
-			var value float64 = subExpression.Execute(math.MaxInt)
+		if branch.IsConstant() && branch.Type != SYMBOL { // Remove sign from numeric terms by absolute accumulation. Using IsConstant() ensures Execute is stable.
+			var value float64 = branch.Execute(EXECUTE_CONSTANT_PLACEHOLDER)
 			numericAccumulator *= math.Abs(value)
 			continue
 		}
 
-		impactful = append(impactful, subExpression)
+		impactful = append(impactful, branch)
 	}
 
 	if isApproximate(numericAccumulator, 0) {
@@ -242,17 +274,17 @@ func formatMultiplication(expression *Expression) (result string) {
 		return algebraicString(Float(value))
 	}
 
-	var subStrings []string
-	for _, subExpression := range impactful {
-		var subString string = algebraicString(subExpression)
+	var branchesStrings []string
+	for _, branch := range impactful {
+		var branchString string = algebraicString(branch)
 
-		if subExpression.Type == ADDITION && (len(impactful) > 1 || !isApproximate(numericAccumulator, 1) || isOverallNegative) {
-			subString = fmt.Sprintf("(%s)", subString)
+		if branch.Type == ADDITION && (len(impactful) > 1 || !isApproximate(numericAccumulator, 1) || isOverallNegative) {
+			branchString = fmt.Sprintf("(%s)", branchString)
 		}
 
-		subStrings = append(subStrings, subString)
+		branchesStrings = append(branchesStrings, branchString)
 	}
-	var inner string = strings.Join(subStrings, " * ")
+	var inner string = strings.Join(branchesStrings, " * ")
 
 	var signal string
 	if isOverallNegative {
@@ -275,8 +307,8 @@ func formatMultiplication(expression *Expression) (result string) {
 }
 
 func formatPower(expression *Expression) string {
-	if len(expression.Arguments) != 2 {
-		return ""
+	if expression.IsMalformedStructure() {
+		return "NaN"
 	}
 
 	var base *Expression = expression.Arguments[0]
@@ -286,94 +318,147 @@ func formatPower(expression *Expression) string {
 		return "0^0"
 	}
 
-	if base.IsZero() {
-		return ""
-	}
-
-	if exponent.IsZero() {
-		return "1"
-	}
-
 	if expression.IsConstant() {
-		return algebraicString(Float(expression.Execute(math.MaxInt)))
+		return algebraicString(Float(expression.Execute(EXECUTE_CONSTANT_PLACEHOLDER)))
 	}
 
-	if exponent.IsAbsoluteOne() {
-		negative, applicable := exponent.IsNegative()
-		if negative && applicable {
-			return fmt.Sprintf("1/%s", algebraicString(base))
-		}
-
+	negative, _ := exponent.IsNegative()
+	if exponent.IsAbsoluteOne() && !negative {
 		return algebraicString(base)
 	}
 
 	var baseString string = algebraicString(base)
 	var exponentString string = algebraicString(exponent)
 
-	if strings.HasPrefix(baseString, "-") {
-		baseString = fmt.Sprintf("(%s)", baseString)
-
-	} else {
-		switch base.Type {
-		case ADDITION, MULTIPLICATION:
-			if powerNeedsParenthesis(baseString) {
-				baseString = fmt.Sprintf("(%s)", baseString)
-			}
-		}
-	}
-
-	switch exponent.Type {
-	case ADDITION:
-		var needParenthesis bool = powerNeedsParenthesis(exponentString)
-		fmt.Printf("exponent powerNeedsParenthesis: %t\n", needParenthesis)
-
-		if needParenthesis {
-			exponentString = fmt.Sprintf("(%s)", exponentString)
-		}
-
-	case MULTIPLICATION:
-		if exponent.IsSignalInvertible() {
-			exponentString = exponentString[1:]
-		}
-
-		var needParenthesis bool = powerNeedsParenthesis(exponentString)
-		fmt.Printf("exponent powerNeedsParenthesis: %t\n", needParenthesis)
-
-		if needParenthesis {
-			exponentString = fmt.Sprintf("(%s)", exponentString)
-		}
-	}
-
-	if exponent.IsSignalInvertible() {
-		return fmt.Sprintf("1/(%s^%s)", baseString, strings.TrimPrefix(exponentString, "-"))
-	}
+	baseString = encloseInParenthesis(baseString)
+	exponentString = encloseInParenthesis(exponentString)
 
 	return fmt.Sprintf("%s^%s", baseString, exponentString)
 }
 
+func formatExp(expression *Expression) string {
+	if expression.IsMalformedStructure() {
+		return "NaN"
+	}
+
+	if expression.IsConstant() {
+		return algebraicString(Float(expression.Execute(EXECUTE_CONSTANT_PLACEHOLDER)))
+	}
+
+	negative, _ := expression.Arguments[0].IsNegative()
+	if expression.Arguments[0].IsAbsoluteOne() && !negative {
+		return "e"
+	}
+
+	return fmt.Sprintf("e^%s", encloseInParenthesis(algebraicString(expression.Arguments[0])))
+}
+
 func formatSin(expression *Expression) string {
-	fmt.Printf("%T\n", expression)
-	return ""
+	if expression.IsMalformedStructure() {
+		return "NaN"
+	}
+
+	return fmt.Sprintf("sin(%s)", algebraicString(expression.Arguments[0]))
 }
 
 func formatCos(expression *Expression) string {
-	fmt.Printf("%T\n", expression)
-	return ""
+	if expression.IsMalformedStructure() {
+		return "NaN"
+	}
+
+	return fmt.Sprintf("cos(%s)", algebraicString(expression.Arguments[0]))
 }
 
 func formatTan(expression *Expression) string {
-	fmt.Printf("%T\n", expression)
-	return ""
+	if expression.IsMalformedStructure() {
+		return "NaN"
+	}
+
+	return fmt.Sprintf("sin(%s)", algebraicString(expression.Arguments[0]))
+}
+
+func formatAsin(expression *Expression) string {
+	if expression.IsMalformedStructure() {
+		return "NaN"
+	}
+
+	return fmt.Sprintf("asin(%s)", algebraicString(expression.Arguments[0]))
+}
+
+func formatAcos(expression *Expression) string {
+	if expression.IsMalformedStructure() {
+		return "NaN"
+	}
+
+	return fmt.Sprintf("acos(%s)", algebraicString(expression.Arguments[0]))
+}
+
+func formatAtan(expression *Expression) string {
+	if expression.IsMalformedStructure() {
+		return "NaN"
+	}
+
+	return fmt.Sprintf("asin(%s)", algebraicString(expression.Arguments[0]))
+}
+
+func formatSinh(expression *Expression) string {
+	if expression.IsMalformedStructure() {
+		return "NaN"
+	}
+
+	return fmt.Sprintf("sinh(%s)", algebraicString(expression.Arguments[0]))
+}
+
+func formatCosh(expression *Expression) string {
+	if expression.IsMalformedStructure() {
+		return "NaN"
+	}
+
+	return fmt.Sprintf("cosh(%s)", algebraicString(expression.Arguments[0]))
+}
+
+func formatTanh(expression *Expression) string {
+	if expression.IsMalformedStructure() {
+		return "NaN"
+	}
+
+	return fmt.Sprintf("sinh(%s)", algebraicString(expression.Arguments[0]))
+}
+
+func formatAsinh(expression *Expression) string {
+	if expression.IsMalformedStructure() {
+		return "NaN"
+	}
+
+	return fmt.Sprintf("asinh(%s)", algebraicString(expression.Arguments[0]))
+}
+
+func formatAcosh(expression *Expression) string {
+	if expression.IsMalformedStructure() {
+		return "NaN"
+	}
+
+	return fmt.Sprintf("acosh(%s)", algebraicString(expression.Arguments[0]))
+}
+
+func formatAtanh(expression *Expression) string {
+	if expression.IsMalformedStructure() {
+		return "NaN"
+	}
+
+	return fmt.Sprintf("asinh(%s)", algebraicString(expression.Arguments[0]))
 }
 
 func formatLog(expression *Expression) string {
-	fmt.Printf("%T\n", expression)
-	return ""
-}
+	if expression.IsMalformedStructure() {
+		return "NaN"
+	}
 
-func formatExp(expression *Expression) string {
-	fmt.Printf("%T\n", expression)
-	return ""
+	if len(expression.Arguments) == 1 {
+		return fmt.Sprintf("ln(%s)", algebraicString(expression.Arguments[0]))
+	}
+
+	return fmt.Sprintf("log(%s, %s)", algebraicString(expression.Arguments[1]), algebraicString(expression.Arguments[0]))
 }
 
 func flattenAddition(expression *Expression) (result []*Expression) {
@@ -402,43 +487,39 @@ func flattenMultiplication(expression *Expression) (result []*Expression) {
 	return result
 }
 
-func powerNeedsParenthesis(s string) bool {
-	if strings.HasPrefix(s, "-(") {
-		s = s[1:]
+func encloseInParenthesis(str string) string {
+	if str == "" {
+		return str
 	}
 
-	if !strings.ContainsAny(strings.TrimPrefix(s, "-"), "+-*/") {
-		if !signalOmittedMultiplication.MatchString(s) { // 1. If it's a single leaf (no spaces or operators), no parens needed
-			return false
-		}
+	if isFullyEnclosedInParenthesis(str) {
+		return str
 	}
 
-	if strings.HasPrefix(s, "(") && strings.HasSuffix(s, ")") { // 2. Check if it's already fully wrapped in parentheses
-		inner := s[1 : len(s)-1]
+	if (strings.ContainsAny(str, "+-*") || isAlfaNumeric.MatchString(str)) && !strings.HasPrefix(str, "(-") {
+		return fmt.Sprintf("(%s)", str)
+	}
 
-		// Walk through the string. If balance hits 0 before the end,
-		// it means the outer parens aren't actually a single wrapper.
-		// Example: "(x+1)*(y+2)" -> balance hits 0 at the middle.
-		var balance int = 0
-		var isFullyEnclosed bool = true
-		for _, char := range inner {
-			switch char {
-			case '(':
-				balance++
-			case ')':
-				balance--
+	return str
+}
+
+func isFullyEnclosedInParenthesis(str string) bool {
+	if len(str) < 2 || str[0] != '(' || str[len(str)-1] != ')' {
+		return false
+	}
+
+	var depth int = 0
+	for i, character := range str {
+		switch character {
+		case '(':
+			depth++
+		case ')':
+			depth--
+			if depth == 0 && i != len(str)-1 {
+				return false
 			}
-
-			if balance < 0 { // More closing than opening
-				isFullyEnclosed = false
-				break
-			}
-		}
-
-		if isFullyEnclosed && balance == 0 { // If we finished the loop and balance is 0, it was fully wrapped
-			return false
 		}
 	}
 
-	return true // 3. Otherwise, if it has operators, it needs them
+	return depth == 0
 }
