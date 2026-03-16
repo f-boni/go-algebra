@@ -382,13 +382,6 @@ func (expression *Expression) commutativeBehavioralEqual(other *Expression) bool
 	if !isApproximate(constantExpression, constantOther) {
 		return false
 	}
-	if isApproximate(constantExpression, 0) {
-		constantExpression = 0
-		constantOther = 0
-	} else if isApproximate(constantExpression, 1) {
-		constantExpression = 1
-		constantOther = 1
-	}
 
 	if len(treeExpression) != len(treeOther) {
 		return false
