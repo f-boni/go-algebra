@@ -25,15 +25,13 @@ import (
 
 type Equation struct {
 	Signature  string
-	Expression algebra_expression.Expression
+	Expression *algebra_expression.Expression
 }
 
-func NewEquation(
-	signature string,
-
-) *Equation {
+func NewEquation(signature string) *Equation {
 	return &Equation{
-		Signature: signature,
+		Signature:  signature,
+		Expression: &algebra_expression.Expression{},
 	}
 }
 
@@ -41,6 +39,12 @@ func (equation *Equation) Evaluate(variable float64) (result float64) {
 	return equation.Expression.Execute(variable)
 }
 
+func (equation *Equation) SetExpression(expression *algebra_expression.Expression) *Equation {
+	equation.Expression = expression
+
+	return equation
+}
+
 func (equation *Equation) String() string {
-	return fmt.Sprintf("%s = %s", equation.Signature, &equation.Expression)
+	return fmt.Sprintf("%s = %s", equation.Signature, equation.Expression)
 }
