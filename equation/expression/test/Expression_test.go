@@ -83,5 +83,219 @@ func TestExecuteExpression(t *testing.T) {
 		t.Errorf("\nexpected: %.25f\ngot     : %.25f", expected, result)
 	}
 
-	t.Logf("finishing testing Execute for Expression\n\n")
+	t.Logf("finished testing Execute for Expression\n\n")
+}
+
+func TestEqualExpression(t *testing.T) {
+	t.Logf("testing Equal for Expression\n\n")
+	{ // TRUE CASES
+		{
+			var expression1 *algebraic.Expression = algebraic.Int(1)
+
+			var expression2 *algebraic.Expression = algebraic.Int(1)
+
+			var result bool = expression1.Equal(expression2)
+
+			if result != true {
+				t.Errorf("\nexpected: %t\ngot     : %t", true, result)
+			}
+		}
+
+		{
+			var expression1 *algebraic.Expression = algebraic.Int(1)
+
+			var expression2 *algebraic.Expression = algebraic.Float(1)
+
+			var result bool = expression1.Equal(expression2)
+
+			if result != true {
+				t.Errorf("\nexpected: %t\ngot     : %t", true, result)
+			}
+		}
+
+		{
+			var expression1 *algebraic.Expression = algebraic.Symbol("x")
+
+			var expression2 *algebraic.Expression = algebraic.Symbol("x")
+
+			var result bool = expression1.Equal(expression2)
+
+			if result != true {
+				t.Errorf("\nexpected: %t\ngot     : %t", true, result)
+			}
+		}
+
+		{
+			var expression1 *algebraic.Expression = algebraic.Pow(
+				algebraic.Symbol("x"),
+				algebraic.Int(0),
+			)
+
+			var expression2 *algebraic.Expression = algebraic.Int(1)
+
+			var result bool = expression1.Equal(expression2)
+
+			if result != true {
+				t.Errorf("\nexpected: %t\ngot     : %t", true, result)
+			}
+		}
+
+		{
+			var expression1 *algebraic.Expression = algebraic.Pow(
+				algebraic.Symbol("x"),
+				algebraic.Int(0),
+			)
+
+			var expression2 *algebraic.Expression = algebraic.Float(1)
+
+			var result bool = expression1.Equal(expression2)
+
+			if result != true {
+				t.Errorf("\nexpected: %t\ngot     : %t", true, result)
+			}
+		}
+
+		{
+			var expression1 *algebraic.Expression = algebraic.Pow(
+				algebraic.Symbol("x"),
+				algebraic.Int(0),
+			)
+
+			var expression2 *algebraic.Expression = algebraic.Sin(
+				algebraic.Symbol("pi").Divide(
+					algebraic.Int(2),
+				),
+			)
+
+			var result bool = expression1.Equal(expression2)
+
+			if result != true {
+				t.Errorf("\nexpected: %t\ngot     : %t", true, result)
+			}
+		}
+
+		{
+			var expression1 *algebraic.Expression = algebraic.Tan(
+				algebraic.Symbol("pi").Divide(
+					algebraic.Int(4),
+				),
+			)
+
+			var expression2 *algebraic.Expression = algebraic.Cos(
+				algebraic.Int(0),
+			)
+
+			var result bool = expression1.Equal(expression2)
+
+			if result != true {
+				t.Errorf("\nexpected: %t\ngot     : %t", true, result)
+			}
+		}
+
+		{
+			var expression1 *algebraic.Expression = algebraic.Exp(
+				algebraic.Int(0),
+			)
+
+			var expression2 *algebraic.Expression = algebraic.Log(
+				algebraic.Pow(
+					algebraic.Symbol("x"),
+					algebraic.Int(2),
+				),
+				algebraic.Pow(
+					algebraic.Symbol("x"),
+					algebraic.Int(2),
+				),
+			)
+
+			var result bool = expression1.Equal(expression2)
+
+			if result != true {
+				t.Errorf("\nexpected: %t\ngot     : %t", true, result)
+			}
+		}
+	}
+
+	{ // FALSE CASES
+		{
+			var expression1 *algebraic.Expression = algebraic.Int(1)
+
+			var expression2 *algebraic.Expression = algebraic.Int(2)
+
+			var result bool = expression1.Equal(expression2)
+
+			if result != false {
+				t.Errorf("\nexpected: %t\ngot     : %t", false, result)
+			}
+		}
+
+		{
+			var expression1 *algebraic.Expression = algebraic.Int(1)
+
+			var expression2 *algebraic.Expression = algebraic.Float(1.1)
+
+			var result bool = expression1.Equal(expression2)
+
+			if result != false {
+				t.Errorf("\nexpected: %t\ngot     : %t", false, result)
+			}
+		}
+
+		{
+			var expression1 *algebraic.Expression = algebraic.Int(1)
+
+			var expression2 *algebraic.Expression = algebraic.Symbol("x")
+
+			var result bool = expression1.Equal(expression2)
+
+			if result != false {
+				t.Errorf("\nexpected: %t\ngot     : %t", false, result)
+			}
+		}
+
+		{
+			var expression1 *algebraic.Expression = algebraic.Float(1.1)
+
+			var expression2 *algebraic.Expression = algebraic.Symbol("x")
+
+			var result bool = expression1.Equal(expression2)
+
+			if result != false {
+				t.Errorf("\nexpected: %t\ngot     : %t", false, result)
+			}
+		}
+
+		{
+			var expression1 *algebraic.Expression = algebraic.Symbol("x")
+
+			var expression2 *algebraic.Expression = algebraic.Symbol("e")
+
+			var result bool = expression1.Equal(expression2)
+
+			if result != false {
+				t.Errorf("\nexpected: %t\ngot     : %t", false, result)
+			}
+		}
+
+		{
+			var expression1 *algebraic.Expression = algebraic.Pow(
+				algebraic.Symbol("x"),
+				algebraic.Int(0),
+			)
+
+			var expression2 *algebraic.Expression = algebraic.Cos(
+				algebraic.Symbol("pi").Divide(
+					algebraic.Int(2),
+				),
+			)
+
+			var result bool = expression1.Equal(expression2)
+
+			if result != false {
+				t.Errorf("\nexpected: %t\ngot     : %t", false, result)
+			}
+		}
+	}
+
+	t.Logf("finished testing Equal for Expression\n\n")
 }

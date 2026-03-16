@@ -46,7 +46,7 @@ func TestStringExpressionCaseBareInteger(t *testing.T) {
 		}
 	}
 
-	t.Logf("finishing testing String for Expression CASE BARE INTEGER\n\n")
+	t.Logf("finished testing String for Expression CASE BARE INTEGER\n\n")
 }
 
 func TestStringExpressionCaseBareFloat(t *testing.T) {
@@ -91,7 +91,7 @@ func TestStringExpressionCaseBareFloat(t *testing.T) {
 		}
 	}
 
-	t.Logf("finishing testing String for Expression CASE BARE FLOAT\n\n")
+	t.Logf("finished testing String for Expression CASE BARE FLOAT\n\n")
 }
 
 func TestStringExpressionCaseBareVariable(t *testing.T) {
@@ -116,7 +116,7 @@ func TestStringExpressionCaseBareVariable(t *testing.T) {
 		}
 	}
 
-	t.Logf("finishing testing String for Expression CASE BARE VARIABLE\n\n")
+	t.Logf("finished testing String for Expression CASE BARE VARIABLE\n\n")
 }
 
 func TestStringExpressionCaseAdditionConstant(t *testing.T) {
@@ -235,7 +235,7 @@ func TestStringExpressionCaseAdditionConstant(t *testing.T) {
 		}
 	}
 
-	t.Logf("finishing testing String for Expression CASE ADDITION CONSTANT\n\n")
+	t.Logf("finished testing String for Expression CASE ADDITION CONSTANT\n\n")
 }
 
 func TestStringExpressionCaseAdditionSymbol(t *testing.T) {
@@ -332,7 +332,7 @@ func TestStringExpressionCaseAdditionSymbol(t *testing.T) {
 		}
 	}
 
-	t.Logf("finishing testing String for Expression CASE ADDITION SYMBOL\n\n")
+	t.Logf("finished testing String for Expression CASE ADDITION SYMBOL\n\n")
 }
 
 func TestStringExpressionCaseAdditionZeroSituation(t *testing.T) {
@@ -513,7 +513,7 @@ func TestStringExpressionCaseAdditionZeroSituation(t *testing.T) {
 		}
 	}
 
-	t.Logf("finishing testing String for Expression CASE ADDITION ZERO SITUATION\n\n")
+	t.Logf("finished testing String for Expression CASE ADDITION ZERO SITUATION\n\n")
 }
 
 func TestStringExpressionCaseMultiplyConstant(t *testing.T) {
@@ -599,7 +599,7 @@ func TestStringExpressionCaseMultiplyConstant(t *testing.T) {
 		}
 	}
 
-	t.Logf("finishing testing String for Expression CASE MULTIPLY CONSTANT\n\n")
+	t.Logf("finished testing String for Expression CASE MULTIPLY CONSTANT\n\n")
 }
 
 func TestStringExpressionCaseAtomicFamilyMultiplyAggregatedSymbol(t *testing.T) {
@@ -797,7 +797,7 @@ func TestStringExpressionCaseAtomicFamilyMultiplyAggregatedSymbol(t *testing.T) 
 		}
 	}
 
-	t.Logf("finishing testing String for Expression CASE MULTIPLY SYMBOL\n\n")
+	t.Logf("finished testing String for Expression CASE MULTIPLY SYMBOL\n\n")
 }
 
 func TestStringExpressionCaseMultiplyZeroSituation(t *testing.T) {
@@ -1000,7 +1000,7 @@ func TestStringExpressionCaseMultiplyZeroSituation(t *testing.T) {
 		}
 	}
 
-	t.Logf("finishing testing String for Expression CASE MULTIPLY ZERO SITUATION\n\n")
+	t.Logf("finished testing String for Expression CASE MULTIPLY ZERO SITUATION\n\n")
 }
 
 func TestStringExpressionCaseNestedAdditionANdMultiplyZeroSituation(t *testing.T) {
@@ -1042,7 +1042,7 @@ func TestStringExpressionCaseNestedAdditionANdMultiplyZeroSituation(t *testing.T
 		}
 	}
 
-	t.Logf("finishing testing String for Expression CASE NESTED ADDITION AND MULTIPLY ZERO SITUATION\n\n")
+	t.Logf("finished testing String for Expression CASE NESTED ADDITION AND MULTIPLY ZERO SITUATION\n\n")
 }
 
 func TestStringExpressionCaseMultiplyWithNestedAddition(t *testing.T) {
@@ -1248,7 +1248,7 @@ func TestStringExpressionCaseMultiplyWithNestedAddition(t *testing.T) {
 		}
 	}
 
-	t.Logf("finishing testing String for Expression CASE MULTIPLY WITH NESTED ADDITION\n\n")
+	t.Logf("finished testing String for Expression CASE MULTIPLY WITH NESTED ADDITION\n\n")
 }
 
 func TestStringExpressionCaseAdditionWithNestedMultiply(t *testing.T) {
@@ -1335,62 +1335,61 @@ func TestStringExpressionCaseAdditionWithNestedMultiply(t *testing.T) {
 		}
 	}
 
-	t.Logf("finishing testing String for Expression CASE ADDITION WITH NESTED MULTIPLY\n\n")
+	t.Logf("finished testing String for Expression CASE ADDITION WITH NESTED MULTIPLY\n\n")
 }
 
-// func TestStringExpressionCaseAdditionAndMultiplyWithComplexNestedSituation(t *testing.T) {
-// 	t.Logf("testing String for Expression CASE ADDITION AND MULTIPLY WITH COMPLEX NESTED SITUATION\n\n")
-// 	{
-// 		var expected string = "(-2.1 * x * (x +e +1)) +x +2"
+func TestStringExpressionCaseAdditionAndMultiplyWithComplexNestedSituation(t *testing.T) {
+	t.Logf("testing String for Expression CASE ADDITION AND MULTIPLY WITH COMPLEX NESTED SITUATION\n\n")
+	{
+		var expected string = "(-2.1 * x * (x +e +1)) +x +2"
 
-// 		var result string = algebraic.Sum(
-// 			algebraic.Int(2),
-// 			algebraic.Symbol("x"),
-// 			algebraic.Multiply(
-// 				algebraic.Symbol("x"),
-// 				algebraic.Float(-2.1),
-// 				algebraic.Sum(
-// 					algebraic.Int(1),
-// 					algebraic.Symbol("x"),
-// 					algebraic.Symbol("e"),
-// 				),
-// 			),
-// 		).String()
+		var result string = algebraic.Sum(
+			algebraic.Int(2),
+			algebraic.Symbol("x"),
+			algebraic.Multiply(
+				algebraic.Symbol("x"),
+				algebraic.Float(-2.1),
+				algebraic.Sum(
+					algebraic.Int(1),
+					algebraic.Symbol("x"),
+					algebraic.Symbol("e"),
+				),
+			),
+		).String()
 
-// 		if result != expected {
-// 			t.Errorf("\nexpected: %s\ngot     : %s", expected, result)
-// 		}
-// 	}
+		if result != expected {
+			t.Errorf("\nexpected: %s\ngot     : %s", expected, result)
+		}
+	}
 
-// 	{
-// 		var expected string = "x +2"
+	{
+		var expected string = "x +2"
 
-// 		var result string = algebraic.Sum(
-// 			algebraic.Int(2),
-// 			algebraic.Symbol("x"),
-// 			algebraic.Multiply(
-// 				algebraic.Symbol("x"),
-// 				algebraic.Cos(
-// 					algebraic.Multiply(
-// 						algebraic.Float(0.5),
-// 						algebraic.Symbol("pi"),
-// 					),
-// 				),
-// 				algebraic.Sum(
-// 					algebraic.Int(1),
-// 					algebraic.Symbol("x"),
-// 					algebraic.Symbol("e"),
-// 				),
-// 			),
-// 		).String()
+		var result string = algebraic.Sum(
+			algebraic.Int(2),
+			algebraic.Symbol("x"),
+			algebraic.Multiply(
+				algebraic.Symbol("x"),
+				algebraic.Cos(
+					algebraic.Symbol("pi").Divide(
+						algebraic.Int(2),
+					),
+				),
+				algebraic.Sum(
+					algebraic.Int(1),
+					algebraic.Symbol("x"),
+					algebraic.Symbol("e"),
+				),
+			),
+		).String()
 
-// 		if result != expected {
-// 			t.Errorf("\nexpected: %s\ngot     : %s", expected, result)
-// 		}
-// 	}
+		if result != expected {
+			t.Errorf("\nexpected: %s\ngot     : %s", expected, result)
+		}
+	}
 
-// 	t.Logf("finishing testing String for Expression CASE ADDITION AND MULTIPLY WITH COMPLEX NESTED SITUATION\n\n")
-// }
+	t.Logf("finished testing String for Expression CASE ADDITION AND MULTIPLY WITH COMPLEX NESTED SITUATION\n\n")
+}
 
 func TestStringExpressionCaseBarePower(t *testing.T) {
 	t.Logf("testing String for Expression CASE BARE POWER\n\n")
@@ -1447,7 +1446,7 @@ func TestStringExpressionCaseBarePower(t *testing.T) {
 	}
 
 	{
-		var expected string = "1/x"
+		var expected string = "x^(-1)"
 
 		var result string = algebraic.Pow(
 			algebraic.Symbol("x"),
@@ -1460,7 +1459,7 @@ func TestStringExpressionCaseBarePower(t *testing.T) {
 	}
 
 	{
-		var expected string = "1/(x^3)"
+		var expected string = "x^(-3)"
 
 		var result string = algebraic.Pow(
 			algebraic.Symbol("x"),
@@ -1473,7 +1472,7 @@ func TestStringExpressionCaseBarePower(t *testing.T) {
 	}
 
 	{
-		var expected string = "1/(x^3.3)"
+		var expected string = "x^(-3.3)"
 
 		var result string = algebraic.Pow(
 			algebraic.Symbol("x"),
@@ -1524,7 +1523,7 @@ func TestStringExpressionCaseBarePower(t *testing.T) {
 	}
 
 	{
-		var expected string = ""
+		var expected string = "0"
 
 		var result string = algebraic.Pow(
 			algebraic.Cos(
@@ -1540,7 +1539,7 @@ func TestStringExpressionCaseBarePower(t *testing.T) {
 		}
 	}
 
-	t.Logf("finishing testing String for Expression CASE BARE POWER\n\n")
+	t.Logf("finished testing String for Expression CASE BARE POWER\n\n")
 }
 
 func TestStringExpressionCasePowerWithNestedAdditionAndMultiplyArguments(t *testing.T) {
@@ -1562,7 +1561,7 @@ func TestStringExpressionCasePowerWithNestedAdditionAndMultiplyArguments(t *test
 	}
 
 	{
-		var expected string = "1/((-x)^y)"
+		var expected string = "(-x)^(-y)"
 
 		var result string = algebraic.Pow(
 			algebraic.Multiply(
@@ -1616,7 +1615,7 @@ func TestStringExpressionCasePowerWithNestedAdditionAndMultiplyArguments(t *test
 	}
 
 	{
-		var expected string = "1/((x +1)^2)"
+		var expected string = "(x +1)^(-2)"
 
 		var result string = algebraic.Pow(
 			algebraic.Sum(
@@ -1632,7 +1631,7 @@ func TestStringExpressionCasePowerWithNestedAdditionAndMultiplyArguments(t *test
 	}
 
 	{
-		var expected string = "1/((-(x +1))^2)"
+		var expected string = "(-(x +1))^(-2)"
 
 		var result string = algebraic.Pow(
 			algebraic.Multiply(
@@ -1670,7 +1669,7 @@ func TestStringExpressionCasePowerWithNestedAdditionAndMultiplyArguments(t *test
 	}
 
 	{
-		var expected string = "1/((x +1)^(x +2))"
+		var expected string = "(x +1)^(-(x +2))"
 
 		var result string = algebraic.Pow(
 			algebraic.Sum(
@@ -1692,7 +1691,7 @@ func TestStringExpressionCasePowerWithNestedAdditionAndMultiplyArguments(t *test
 	}
 
 	{
-		var expected string = "1/((-(x +1))^(x +2))"
+		var expected string = "(-(x +1))^(-(x +2))"
 
 		var result string = algebraic.Pow(
 			algebraic.Multiply(
@@ -1749,7 +1748,7 @@ func TestStringExpressionCasePowerWithNestedAdditionAndMultiplyArguments(t *test
 	}
 
 	{
-		var expected string = "1/((2x)^2)"
+		var expected string = "(2x)^(-2)"
 
 		var result string = algebraic.Pow(
 			algebraic.Multiply(
@@ -1765,7 +1764,7 @@ func TestStringExpressionCasePowerWithNestedAdditionAndMultiplyArguments(t *test
 	}
 
 	{
-		var expected string = "1/((-2x)^2)"
+		var expected string = "(-2x)^(-2)"
 
 		var result string = algebraic.Pow(
 			algebraic.Multiply(
@@ -1800,7 +1799,7 @@ func TestStringExpressionCasePowerWithNestedAdditionAndMultiplyArguments(t *test
 	}
 
 	{
-		var expected string = "1/((2x)^(4x))"
+		var expected string = "(2x)^(-4x)"
 
 		var result string = algebraic.Pow(
 			algebraic.Multiply(
@@ -1819,7 +1818,7 @@ func TestStringExpressionCasePowerWithNestedAdditionAndMultiplyArguments(t *test
 	}
 
 	{
-		var expected string = "1/((-2x)^(4x))"
+		var expected string = "(-2x)^(-4x)"
 
 		var result string = algebraic.Pow(
 			algebraic.Multiply(
@@ -1872,7 +1871,7 @@ func TestStringExpressionCasePowerWithNestedAdditionAndMultiplyArguments(t *test
 	}
 
 	{
-		var expected string = "1/((2 * x * e)^2)"
+		var expected string = "(2 * x * e)^(-2)"
 
 		var result string = algebraic.Pow(
 			algebraic.Multiply(
@@ -1889,7 +1888,7 @@ func TestStringExpressionCasePowerWithNestedAdditionAndMultiplyArguments(t *test
 	}
 
 	{
-		var expected string = "1/((-2 * x * e)^2)"
+		var expected string = "(-2 * x * e)^(-2)"
 
 		var result string = algebraic.Pow(
 			algebraic.Multiply(
@@ -1948,7 +1947,7 @@ func TestStringExpressionCasePowerWithNestedAdditionAndMultiplyArguments(t *test
 	}
 
 	{
-		var expected string = "1/((2 * x * e)^(4 * y * e))"
+		var expected string = "(2 * x * e)^(-4 * y * e)"
 
 		var result string = algebraic.Pow(
 			algebraic.Multiply(
@@ -1969,7 +1968,7 @@ func TestStringExpressionCasePowerWithNestedAdditionAndMultiplyArguments(t *test
 	}
 
 	{
-		var expected string = "1/((-2 * x * e)^(4 * y * e))"
+		var expected string = "(-2 * x * e)^(-4 * y * e)"
 
 		var result string = algebraic.Pow(
 			algebraic.Multiply(
@@ -1989,396 +1988,366 @@ func TestStringExpressionCasePowerWithNestedAdditionAndMultiplyArguments(t *test
 		}
 	}
 
-	t.Logf("finishing testing String for Expression CASE POWER WITH NESTED ADDITION AND MULTIPLY ARGUMENTS\n\n")
+	t.Logf("finished testing String for Expression CASE POWER WITH NESTED ADDITION AND MULTIPLY ARGUMENTS\n\n")
 }
 
-// func TestStringExpressionCasePowerHandlingParenthesisWhenNestedZero(t *testing.T) {
-// 	t.Logf("testing String for Expression CASE POWER HANDLING PARENTHESIS WHEN NESTED ZERO\n\n")
-
-// 	{
-// 		var expected string = "x^2"
-
-// 		var result string = algebraic.Pow(
-// 			algebraic.Multiply(
-// 				algebraic.Symbol("x"),
-// 				algebraic.Int(1),
-// 			),
-// 			algebraic.Int(2),
-// 		).String()
-
-// 		if result != expected {
-// 			t.Errorf("\nexpected: %s\ngot     : %s", expected, result)
-// 		}
-// 	}
-
-// 	{
-// 		var expected string = "(-x)^2"
-
-// 		var result string = algebraic.Pow(
-// 			algebraic.Multiply(
-// 				algebraic.Symbol("x"),
-// 				algebraic.Int(-1),
-// 			),
-// 			algebraic.Int(2),
-// 		).String()
-
-// 		if result != expected {
-// 			t.Errorf("\nexpected: %s\ngot     : %s", expected, result)
-// 		}
-// 	}
-
-// 	{
-// 		var expected string = "1/(x^2)"
-
-// 		var result string = algebraic.Pow(
-// 			algebraic.Multiply(
-// 				algebraic.Symbol("x"),
-// 				algebraic.Int(1),
-// 			),
-// 			algebraic.Int(-2),
-// 		).String()
-
-// 		if result != expected {
-// 			t.Errorf("\nexpected: %s\ngot     : %s", expected, result)
-// 		}
-// 	}
-
-// 	{
-// 		var expected string = "1/((-x)^2)"
-
-// 		var result string = algebraic.Pow(
-// 			algebraic.Multiply(
-// 				algebraic.Symbol("x"),
-// 				algebraic.Int(-1),
-// 			),
-// 			algebraic.Int(-2),
-// 		).String()
-
-// 		if result != expected {
-// 			t.Errorf("\nexpected: %s\ngot     : %s", expected, result)
-// 		}
-// 	}
-
-// 	{
-// 		var expected string = "x^y"
-
-// 		var result string = algebraic.Pow(
-// 			algebraic.Multiply(
-// 				algebraic.Symbol("x"),
-// 				algebraic.Int(1),
-// 			),
-// 			algebraic.Multiply(
-// 				algebraic.Symbol("y"),
-// 				algebraic.Int(1),
-// 			),
-// 		).String()
-
-// 		if result != expected {
-// 			t.Errorf("\nexpected: %s\ngot     : %s", expected, result)
-// 		}
-// 	}
-
-// 	{
-// 		var expected string = "(-x)^y"
-
-// 		var result string = algebraic.Pow(
-// 			algebraic.Multiply(
-// 				algebraic.Symbol("x"),
-// 				algebraic.Int(-1),
-// 			),
-// 			algebraic.Multiply(
-// 				algebraic.Symbol("y"),
-// 				algebraic.Int(1),
-// 			),
-// 		).String()
-
-// 		if result != expected {
-// 			t.Errorf("\nexpected: %s\ngot     : %s", expected, result)
-// 		}
-// 	}
-
-// 	{
-// 		var expected string = "1/(x^y)"
-
-// 		var result string = algebraic.Pow(
-// 			algebraic.Multiply(
-// 				algebraic.Symbol("x"),
-// 				algebraic.Int(1),
-// 			),
-// 			algebraic.Multiply(
-// 				algebraic.Symbol("y"),
-// 				algebraic.Int(-1),
-// 			),
-// 		).String()
-
-// 		if result != expected {
-// 			t.Errorf("\nexpected: %s\ngot     : %s", expected, result)
-// 		}
-// 	}
-
-// 	{
-// 		var expected string = "1/((-x)^y)"
-
-// 		var result string = algebraic.Pow(
-// 			algebraic.Multiply(
-// 				algebraic.Symbol("x"),
-// 				algebraic.Int(-1),
-// 			),
-// 			algebraic.Multiply(
-// 				algebraic.Symbol("y"),
-// 				algebraic.Int(-1),
-// 			),
-// 		).String()
-
-// 		if result != expected {
-// 			t.Errorf("\nexpected: %s\ngot     : %s", expected, result)
-// 		}
-// 	}
-
-// 	{
-// 		var expected string = "x^2"
-
-// 		var result string = algebraic.Pow(
-// 			algebraic.Sum(
-// 				algebraic.Symbol("x"),
-// 				algebraic.Int(0),
-// 			),
-// 			algebraic.Int(2),
-// 		).String()
-
-// 		if result != expected {
-// 			t.Errorf("\nexpected: %s\ngot     : %s", expected, result)
-// 		}
-// 	}
-
-// 	{
-// 		var expected string = "x^2"
-
-// 		var result string = algebraic.Pow(
-// 			algebraic.Symbol("x"),
-// 			algebraic.Sum(
-// 				algebraic.Int(2),
-// 				algebraic.Int(0),
-// 			),
-// 		).String()
-
-// 		if result != expected {
-// 			t.Errorf("\nexpected: %s\ngot     : %s", expected, result)
-// 		}
-// 	}
-
-// 	{
-// 		var expected string = "1/(x^2)"
-
-// 		var result string = algebraic.Pow(
-// 			algebraic.Sum(
-// 				algebraic.Symbol("x"),
-// 				algebraic.Int(0),
-// 			),
-// 			algebraic.Int(-2),
-// 		).String()
-
-// 		if result != expected {
-// 			t.Errorf("\nexpected: %s\ngot     : %s", expected, result)
-// 		}
-// 	}
-
-// 	{
-// 		var expected string = "1/(x^2)"
-
-// 		var result string = algebraic.Pow(
-// 			algebraic.Symbol("x"),
-// 			algebraic.Sum(
-// 				algebraic.Int(-2),
-// 				algebraic.Int(0),
-// 			),
-// 		).String()
-
-// 		if result != expected {
-// 			t.Errorf("\nexpected: %s\ngot     : %s", expected, result)
-// 		}
-// 	}
-
-// 	{
-// 		var expected string = "x^y"
-
-// 		var result string = algebraic.Pow(
-// 			algebraic.Sum(
-// 				algebraic.Symbol("x"),
-// 				algebraic.Int(0),
-// 			),
-// 			algebraic.Sum(
-// 				algebraic.Symbol("y"),
-// 				algebraic.Int(0),
-// 			),
-// 		).String()
-
-// 		if result != expected {
-// 			t.Errorf("\nexpected: %s\ngot     : %s", expected, result)
-// 		}
-// 	}
-
-// 	{
-// 		var expected string = "1/(x^y)"
-
-// 		var result string = algebraic.Pow(
-// 			algebraic.Sum(
-// 				algebraic.Symbol("x"),
-// 				algebraic.Int(0),
-// 			),
-// 			algebraic.Sum(
-// 				algebraic.Multiply(
-// 					algebraic.Symbol("y"),
-// 					algebraic.Int(-1),
-// 				),
-// 				algebraic.Int(0),
-// 			),
-// 		).String()
-
-// 		if result != expected {
-// 			t.Errorf("\nexpected: %s\ngot     : %s", expected, result)
-// 		}
-// 	}
-
-// 	{
-// 		var expected string = "2^x"
-
-// 		var result string = algebraic.Pow(
-// 			algebraic.Int(2),
-// 			algebraic.Sum(
-// 				algebraic.Symbol("x"),
-// 				algebraic.Int(0),
-// 			),
-// 		).String()
-
-// 		if result != expected {
-// 			t.Errorf("\nexpected: %s\ngot     : %s", expected, result)
-// 		}
-// 	}
-
-// 	{
-// 		var expected string = "2^x"
-
-// 		var result string = algebraic.Pow(
-// 			algebraic.Sum(
-// 				algebraic.Int(2),
-// 				algebraic.Int(0),
-// 			),
-// 			algebraic.Symbol("x"),
-// 		).String()
-
-// 		if result != expected {
-// 			t.Errorf("\nexpected: %s\ngot     : %s", expected, result)
-// 		}
-// 	}
-
-// 	{
-// 		var expected string = "1/(2^x)"
-
-// 		var result string = algebraic.Pow(
-// 			algebraic.Int(2),
-// 			algebraic.Sum(
-// 				algebraic.Multiply(
-// 					algebraic.Symbol("x"),
-// 					algebraic.Int(-1),
-// 				),
-// 				algebraic.Int(0),
-// 			),
-// 		).String()
-
-// 		if result != expected {
-// 			t.Errorf("\nexpected: %s\ngot     : %s", expected, result)
-// 		}
-// 	}
-
-// 	{
-// 		var expected string = "1/(2^x)"
-
-// 		var result string = algebraic.Pow(
-// 			algebraic.Sum(
-// 				algebraic.Int(2),
-// 				algebraic.Int(0),
-// 			),
-// 			algebraic.Multiply(
-// 				algebraic.Symbol("x"),
-// 				algebraic.Int(-1),
-// 			),
-// 		).String()
-
-// 		if result != expected {
-// 			t.Errorf("\nexpected: %s\ngot     : %s", expected, result)
-// 		}
-// 	}
-
-// 	{
-// 		var expected string = "(-2)^x"
-
-// 		var result string = algebraic.Pow(
-// 			algebraic.Int(-2),
-// 			algebraic.Sum(
-// 				algebraic.Symbol("x"),
-// 				algebraic.Int(0),
-// 			),
-// 		).String()
-
-// 		if result != expected {
-// 			t.Errorf("\nexpected: %s\ngot     : %s", expected, result)
-// 		}
-// 	}
-
-// 	{
-// 		var expected string = "(-2)^x"
-
-// 		var result string = algebraic.Pow(
-// 			algebraic.Sum(
-// 				algebraic.Int(-2),
-// 				algebraic.Int(0),
-// 			),
-// 			algebraic.Symbol("x"),
-// 		).String()
-
-// 		if result != expected {
-// 			t.Errorf("\nexpected: %s\ngot     : %s", expected, result)
-// 		}
-// 	}
-
-// 	{
-// 		var expected string = "1/((-2)^x)"
-
-// 		var result string = algebraic.Pow(
-// 			algebraic.Int(-2),
-// 			algebraic.Sum(
-// 				algebraic.Multiply(
-// 					algebraic.Symbol("x"),
-// 					algebraic.Int(-1),
-// 				),
-// 				algebraic.Int(0),
-// 			),
-// 		).String()
-
-// 		if result != expected {
-// 			t.Errorf("\nexpected: %s\ngot     : %s", expected, result)
-// 		}
-// 	}
-
-// 	{
-// 		var expected string = "1/((-2)^x)"
-
-// 		var result string = algebraic.Pow(
-// 			algebraic.Sum(
-// 				algebraic.Int(-2),
-// 				algebraic.Int(0),
-// 			),
-// 			algebraic.Multiply(
-// 				algebraic.Symbol("x"),
-// 				algebraic.Int(-1),
-// 			),
-// 		).String()
-
-// 		if result != expected {
-// 			t.Errorf("\nexpected: %s\ngot     : %s", expected, result)
-// 		}
-// 	}
-
-// 	t.Logf("finishing testing String for Expression CASE POWER HANDLING PARENTHESIS WHEN NESTED ZERO\n\n")
-// }
+func TestStringExpressionCasePowerHandlingParenthesisWhenNestedUnImpactfulPieces(t *testing.T) {
+	t.Logf("testing String for Expression CASE POWER HANDLING PARENTHESIS WHEN NESTED UN-IMPACTFUL PIECES\n\n")
+
+	{
+		var expected string = "x^2"
+
+		var result string = algebraic.Pow(
+			algebraic.Multiply( // omitted multiplication
+				algebraic.Symbol("x"),
+				algebraic.Int(1),
+			),
+			algebraic.Int(2),
+		).String()
+
+		if result != expected {
+			t.Errorf("\nexpected: %s\ngot     : %s", expected, result)
+		}
+
+		expected = "(-x)^2"
+
+		result = algebraic.Pow(
+			algebraic.Multiply( // its negative counterpart is not omitted
+				algebraic.Symbol("x"),
+				algebraic.Int(-1),
+			),
+			algebraic.Int(2),
+		).String()
+
+		if result != expected {
+			t.Errorf("\nexpected: %s\ngot     : %s", expected, result)
+		}
+	}
+
+	{
+		var expected string = "x^(-2)"
+
+		var result string = algebraic.Pow(
+			algebraic.Multiply( // omitted multiplication
+				algebraic.Symbol("x"),
+				algebraic.Int(1),
+			),
+			algebraic.Int(-2),
+		).String()
+
+		if result != expected {
+			t.Errorf("\nexpected: %s\ngot     : %s", expected, result)
+		}
+
+		expected = "(-x)^(-2)"
+
+		result = algebraic.Pow(
+			algebraic.Multiply( // its negative counterpart is not omitted
+				algebraic.Symbol("x"),
+				algebraic.Int(-1),
+			),
+			algebraic.Int(-2),
+		).String()
+
+		if result != expected {
+			t.Errorf("\nexpected: %s\ngot     : %s", expected, result)
+		}
+	}
+
+	{
+		var expected string = "x^y"
+
+		var result string = algebraic.Pow(
+			algebraic.Multiply( // omitted multiplication
+				algebraic.Symbol("x"),
+				algebraic.Int(1),
+			),
+			algebraic.Multiply( // omitted multiplication
+				algebraic.Symbol("y"),
+				algebraic.Int(1),
+			),
+		).String()
+
+		if result != expected {
+			t.Errorf("\nexpected: %s\ngot     : %s", expected, result)
+		}
+
+		expected = "(-x)^(-y)"
+
+		result = algebraic.Pow(
+			algebraic.Multiply( // its negative counterpart is not omitted
+				algebraic.Symbol("x"),
+				algebraic.Int(-1),
+			),
+			algebraic.Multiply( // its negative counterpart is not omitted
+				algebraic.Symbol("y"),
+				algebraic.Int(-1),
+			),
+		).String()
+
+		if result != expected {
+			t.Errorf("\nexpected: %s\ngot     : %s", expected, result)
+		}
+
+		expected = "(-x)^y"
+
+		result = algebraic.Pow(
+			algebraic.Multiply( // its negative counterpart is not omitted
+				algebraic.Symbol("x"),
+				algebraic.Int(-1),
+			),
+			algebraic.Multiply( // omitted multiplication
+				algebraic.Symbol("y"),
+				algebraic.Int(1),
+			),
+		).String()
+
+		if result != expected {
+			t.Errorf("\nexpected: %s\ngot     : %s", expected, result)
+		}
+
+		expected = "x^(-y)"
+
+		result = algebraic.Pow(
+			algebraic.Multiply( // omitted multiplication
+				algebraic.Symbol("x"),
+				algebraic.Int(1),
+			),
+			algebraic.Multiply( // its negative counterpart is not omitted
+				algebraic.Symbol("y"),
+				algebraic.Int(-1),
+			),
+		).String()
+
+		if result != expected {
+			t.Errorf("\nexpected: %s\ngot     : %s", expected, result)
+		}
+	}
+
+	{
+		var expected string = "x^2"
+
+		var result string = algebraic.Pow(
+			algebraic.Sum( // omitted addition
+				algebraic.Symbol("x"),
+				algebraic.Int(0),
+			),
+			algebraic.Int(2),
+		).String()
+
+		if result != expected {
+			t.Errorf("\nexpected: %s\ngot     : %s", expected, result)
+		}
+
+		expected = "x^2"
+
+		result = algebraic.Pow(
+			algebraic.Symbol("x"),
+			algebraic.Sum( // omitted addition
+				algebraic.Int(2),
+				algebraic.Int(0),
+			),
+		).String()
+
+		if result != expected {
+			t.Errorf("\nexpected: %s\ngot     : %s", expected, result)
+		}
+
+		expected = "x^(-2)"
+
+		result = algebraic.Pow(
+			algebraic.Sum( // omitted addition
+				algebraic.Symbol("x"),
+				algebraic.Int(0),
+			),
+			algebraic.Int(-2),
+		).String()
+
+		if result != expected {
+			t.Errorf("\nexpected: %s\ngot     : %s", expected, result)
+		}
+
+		expected = "x^(-2)"
+
+		result = algebraic.Pow(
+			algebraic.Symbol("x"),
+			algebraic.Sum( // omitted addition
+				algebraic.Int(-2),
+				algebraic.Int(0),
+			),
+		).String()
+
+		if result != expected {
+			t.Errorf("\nexpected: %s\ngot     : %s", expected, result)
+		}
+	}
+
+	{
+		var expected string = "x^y"
+
+		var result string = algebraic.Pow(
+			algebraic.Sum( // omitted addition
+				algebraic.Symbol("x"),
+				algebraic.Int(0),
+			),
+			algebraic.Sum( // omitted addition
+				algebraic.Symbol("y"),
+				algebraic.Int(0),
+			),
+		).String()
+
+		if result != expected {
+			t.Errorf("\nexpected: %s\ngot     : %s", expected, result)
+		}
+
+		expected = "x^(-y)"
+
+		result = algebraic.Pow(
+			algebraic.Sum( // omitted addition
+				algebraic.Symbol("x"),
+				algebraic.Int(0),
+			),
+			algebraic.Sum( // omitted addition
+				algebraic.Multiply(
+					algebraic.Symbol("y"),
+					algebraic.Int(-1),
+				),
+				algebraic.Int(0),
+			),
+		).String()
+
+		if result != expected {
+			t.Errorf("\nexpected: %s\ngot     : %s", expected, result)
+		}
+	}
+
+	{
+		var expected string = "2^x"
+
+		var result string = algebraic.Pow(
+			algebraic.Int(2),
+			algebraic.Sum( // omitted addition
+				algebraic.Symbol("x"),
+				algebraic.Int(0),
+			),
+		).String()
+
+		if result != expected {
+			t.Errorf("\nexpected: %s\ngot     : %s", expected, result)
+		}
+
+		expected = "2^x"
+
+		result = algebraic.Pow(
+			algebraic.Sum( // omitted addition
+				algebraic.Int(2),
+				algebraic.Int(0),
+			),
+			algebraic.Symbol("x"),
+		).String()
+
+		if result != expected {
+			t.Errorf("\nexpected: %s\ngot     : %s", expected, result)
+		}
+
+		expected = "2^(-x)"
+
+		result = algebraic.Pow(
+			algebraic.Int(2),
+			algebraic.Sum( // omitted addition
+				algebraic.Multiply(
+					algebraic.Symbol("x"),
+					algebraic.Int(-1),
+				),
+				algebraic.Int(0),
+			),
+		).String()
+
+		if result != expected {
+			t.Errorf("\nexpected: %s\ngot     : %s", expected, result)
+		}
+
+		expected = "2^(-x)"
+
+		result = algebraic.Pow(
+			algebraic.Sum( // omitted addition
+				algebraic.Int(2),
+				algebraic.Int(0),
+			),
+			algebraic.Multiply(
+				algebraic.Symbol("x"),
+				algebraic.Int(-1),
+			),
+		).String()
+
+		if result != expected {
+			t.Errorf("\nexpected: %s\ngot     : %s", expected, result)
+		}
+	}
+
+	{
+		var expected string = "(-2)^x"
+
+		var result string = algebraic.Pow(
+			algebraic.Int(-2),
+			algebraic.Sum( // omitted addition
+				algebraic.Symbol("x"),
+				algebraic.Int(0),
+			),
+		).String()
+
+		if result != expected {
+			t.Errorf("\nexpected: %s\ngot     : %s", expected, result)
+		}
+
+		expected = "(-2)^x"
+
+		result = algebraic.Pow(
+			algebraic.Sum( // omitted addition
+				algebraic.Int(-2),
+				algebraic.Int(0),
+			),
+			algebraic.Symbol("x"),
+		).String()
+
+		if result != expected {
+			t.Errorf("\nexpected: %s\ngot     : %s", expected, result)
+		}
+
+		expected = "(-2)^(-x)"
+
+		result = algebraic.Pow(
+			algebraic.Int(-2),
+			algebraic.Sum(
+				algebraic.Multiply(
+					algebraic.Symbol("x"),
+					algebraic.Int(-1),
+				),
+				algebraic.Int(0),
+			),
+		).String()
+
+		if result != expected {
+			t.Errorf("\nexpected: %s\ngot     : %s", expected, result)
+		}
+
+		expected = "(-2)^(-x)"
+
+		result = algebraic.Pow(
+			algebraic.Sum(
+				algebraic.Int(-2),
+				algebraic.Int(0),
+			),
+			algebraic.Multiply(
+				algebraic.Symbol("x"),
+				algebraic.Int(-1),
+			),
+		).String()
+
+		if result != expected {
+			t.Errorf("\nexpected: %s\ngot     : %s", expected, result)
+		}
+	}
+
+	t.Logf("finished testing String for Expression CASE POWER HANDLING PARENTHESIS WHEN NESTED UN-IMPACTFUL PIECES\n\n")
+}
