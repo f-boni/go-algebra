@@ -24,7 +24,7 @@ import (
 	algebra_equation "github.com/FabioLuisBoni/go-algebra/equation"
 	algebra_expression "github.com/FabioLuisBoni/go-algebra/equation/expression"
 	algebra_frame "github.com/FabioLuisBoni/go-algebra/frame"
-	algebra_numeric_method "github.com/FabioLuisBoni/go-algebra/numeric_method"
+	algebra_numeric_method "github.com/FabioLuisBoni/go-algebra/numeric-method"
 )
 
 func TestBaseOnLeastSquares(t *testing.T) {
