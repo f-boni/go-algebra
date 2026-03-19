@@ -24,8 +24,8 @@ import (
 )
 
 type Equation struct {
-	Signature  string
-	Expression *algebra.Expression
+	Signature  string              `json:"signature"`
+	Expression *algebra.Expression `json:"expression"`
 }
 
 func NewEquation(signature string) *Equation {
