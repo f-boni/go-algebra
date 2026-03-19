@@ -158,18 +158,19 @@ func formatAddition(expression *Expression) (result string) {
 			switch branch.Type {
 			case MULTIPLICATION:
 				var branchString string = algebraicString(branch)
+				// Always ensure a term has a sign if it's not the first.
+				// We prefix '+' here; if the term is negative, algebraicString should return '-val'
+				// and we can handle the double sign or let algebraicString handle the sign.
 
-				if strings.Contains(branchString, " * ") { // If multiplication contains explicit '*' it means multiple impactful terms → needs parentheses
-					branchesStrings = append(
-						branchesStrings,
-						fmt.Sprintf("+(%s)", branchString),
-					)
+				term := branchString
+				if !strings.HasPrefix(term, "-") && !strings.HasPrefix(term, "+") {
+					term = "+" + term
+				}
 
-				} else { // Single impactful term → behaves like atomic
-					branchesStrings = append(
-						branchesStrings,
-						branchString,
-					)
+				if strings.Contains(branchString, " * ") {
+					branchesStrings = append(branchesStrings, fmt.Sprintf("+(%s)", branchString))
+				} else {
+					branchesStrings = append(branchesStrings, term)
 				}
 
 			default: // Non-special cases → behaves like atomic
@@ -214,14 +215,23 @@ func formatAddition(expression *Expression) (result string) {
 		return ""
 	}
 
-	for i, term := range branchesStrings {
-		if i == 0 {
-			result = strings.TrimPrefix(term, "+")
-			continue
+	if len(branchesStrings) == 0 {
+		if !isApproximate(constantSum, 0) {
+			return fmt.Sprintf("%v", constantSum)
 		}
-
-		result += " " + term
+		return "0"
 	}
+
+	// Join all terms
+	result = strings.Join(branchesStrings, " ")
+
+	// Clean up "middle" artifacts
+	result = strings.ReplaceAll(result, "+ -", " -")
+	result = strings.ReplaceAll(result, "+ +", " +")
+
+	// Finally, remove the leading '+' if it exists
+	result = strings.TrimPrefix(result, " +")
+	result = strings.TrimPrefix(result, "+")
 
 	return result
 }
