@@ -11,7 +11,7 @@
 
 	Created:    12 mar 2026
 	Author:     F. Boni    Email:      fabioboni96@hotmail.com
-	Repository: github.com/FabioLuisBoni/go-algebra
+	Repository: github.com/f-boni/go-algebra
 
 Copyright (c) 2026 Fabio Luis Boni - MIT License
 */
@@ -22,7 +22,7 @@ import (
 	"math/bits"
 	"testing"
 
-	algebraic "github.com/FabioLuisBoni/go-algebra/equation/expression"
+	algebraic "github.com/f-boni/go-algebra/equation/expression"
 )
 
 func TestIsMalformedStructureExpressionCaseFailure(t *testing.T) {
@@ -2073,7 +2073,7 @@ func TestIsMalformedStructureExpressionCaseFailure(t *testing.T) {
 
 func TestIsIndefinitenessExpressionCaseFailure(t *testing.T) {
 	t.Logf("testing IsIndefiniteness for Expression\n\n")
-	// t.Errorf("not tested")
+	// // t.Errorf("not tested")
 	t.Logf("finished testing IsIndefiniteness for Expression\n\n")
 }
 
@@ -4099,7 +4099,7 @@ func TestIsZeroExpression(t *testing.T) {
 		t.Logf("finished testing IsZero for Expression CASE FALSE\n\n")
 	}
 
-	// t.Errorf("not tested")
+	// // t.Errorf("not tested")
 	t.Logf("finished testing IsZero for Expression\n\n")
 }
 
@@ -4672,7 +4672,7 @@ func TestIsAbsoluteOneExpression(t *testing.T) {
 		t.Logf("finished testing IsAbsoluteOne for Expression CASE FALSE\n\n")
 	}
 
-	// t.Errorf("not tested")
+	// // t.Errorf("not tested")
 	t.Logf("finished testing IsAbsoluteOne for Expression\n\n")
 }
 
@@ -4809,19 +4809,19 @@ func TestIsEulerExpression(t *testing.T) {
 		t.Logf("finished testing IsEuler for Expression CASE FALSE\n\n")
 	}
 
-	// t.Errorf("not tested")
+	// // t.Errorf("not tested")
 	t.Logf("finished testing IsEuler for Expression\n\n")
 }
 
 func TestIsFractionExpressionCaseFailure(t *testing.T) {
 	t.Logf("testing IsFraction for Expression\n\n")
-	// t.Errorf("not tested")
+	// // t.Errorf("not tested")
 	t.Logf("finished testing IsFraction for Expression\n\n")
 }
 
 func TestIsIntegerExpressionCaseFailure(t *testing.T) {
 	t.Logf("testing IsInteger for Expression\n\n")
-	// t.Errorf("not tested")
+	// // t.Errorf("not tested")
 	t.Logf("finished testing IsInteger for Expression\n\n")
 }
 

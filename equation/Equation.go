@@ -11,7 +11,7 @@
 
 	Created:    12 mar 2026
 	Author:     F. Boni    Email:      fabioboni96@hotmail.com
-	Repository: github.com/FabioLuisBoni/go-algebra
+	Repository: github.com/f-boni/go-algebra
 
 Copyright (c) 2026 Fabio Luis Boni - MIT License
 */
@@ -20,7 +20,7 @@ package algebra_equation
 import (
 	"fmt"
 
-	algebra "github.com/FabioLuisBoni/go-algebra/equation/expression"
+	algebra "github.com/f-boni/go-algebra/equation/expression"
 )
 
 type Equation struct {

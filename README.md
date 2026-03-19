@@ -227,7 +227,7 @@
 > # **Setup**
 > Open a terminal at your golang project directory and run:
 > ```bash
-> go get github.com/FabioLuisBoni/go-algebra@latest
+> go get github.com/f-boni/go-algebra@latest
 > ```
 > Remember to adjust to the desired version for a better stability.
 >
