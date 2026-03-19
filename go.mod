@@ -1,3 +1,3 @@
-module github.com/FabioLuisBoni/go-algebra
+module github.com/f-boni/go-algebra
 
 go 1.26.0

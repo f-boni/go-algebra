@@ -11,7 +11,7 @@
 
 	Created:    12 mar 2026
 	Author:     F. Boni    Email:      fabioboni96@hotmail.com
-	Repository: github.com/FabioLuisBoni/go-algebra
+	Repository: github.com/f-boni/go-algebra
 
 Copyright (c) 2026 Fabio Luis Boni - MIT License
 */
@@ -22,8 +22,8 @@ import (
 	"math"
 	"testing"
 
-	algebra_equation "github.com/FabioLuisBoni/go-algebra/equation"
-	algebra_expression "github.com/FabioLuisBoni/go-algebra/equation/expression"
+	algebra_equation "github.com/f-boni/go-algebra/equation"
+	algebra_expression "github.com/f-boni/go-algebra/equation/expression"
 )
 
 func TestSetExpressionEquation(t *testing.T) {
