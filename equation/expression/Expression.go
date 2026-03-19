@@ -32,6 +32,8 @@ type Expression struct {
 }
 
 func (expression *Expression) Sum(addition *Expression, others ...*Expression) *Expression {
+	defer expression.ClearCache()
+
 	var additions []*Expression = append([]*Expression{addition}, others...)
 
 	switch expression.Type {
@@ -95,6 +97,8 @@ func (expression *Expression) Subtract(subtraction *Expression, others ...*Expre
 }
 
 func (expression *Expression) Multiply(multiplier *Expression, others ...*Expression) *Expression {
+	defer expression.ClearCache()
+
 	var multipliers []*Expression = append([]*Expression{multiplier}, others...)
 
 	switch expression.Type {
